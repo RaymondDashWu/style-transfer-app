@@ -20,7 +20,7 @@ def upload_image(client, image):
     """
     Uploads images to Imgur
     """
-    album = None #TODO figure out 
+    album = None #TODO figure out how to do dynamic albums
     image_path = image #TODO change later
 
     config = {

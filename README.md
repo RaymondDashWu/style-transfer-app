@@ -2,12 +2,18 @@
 
 ## TODO
 - [ ] README
-- [ ] Imgur create gallery to store input, style, output
-- [ ] hook into React gallery
+- [ ] Imgur create gallery to store input
+- [ ] Style
+- [X] Output
+- [ ] Hook into React gallery
 - [ ] Calculate estimated time based on tf loss
 - [ ] Email user when output is finished
+- [ ] Make separate Imgur account
+- [ ] Hook up Imgur account to app
+
 Below is Vince's original README explaining how this version of style transfer works
-=====
+
+---
 
 ### Style Transfer as Optimal Transport 
 

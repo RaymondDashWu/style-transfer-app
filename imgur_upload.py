@@ -2,8 +2,6 @@ from imgurpython import ImgurClient
 from dotenv import load_dotenv
 import os
 
-from datetime import datetime
-
 def authenticate():
     load_dotenv(dotenv_path='imgur.env')
     CLIENT_ID = os.getenv("CLIENT_ID")
@@ -15,9 +13,9 @@ def authenticate():
     print("Authentication success", client)
     return client
 
-def upload_image(client):
+def upload_image(client, image):
     album = None #TODO figure out 
-    image_path = './media/output.jpg' #TODO change later
+    image_path = image #TODO change later
 
     config = {
         'album': album,
@@ -28,13 +26,12 @@ def upload_image(client):
     image = client.upload_from_path(image_path, config = config, anon = False)
     return image
 
-# items = client.gallery()
-# for item in items:
-#     print(item.title, item.link, item.views)
-
 if __name__ == "__main__":
     client = authenticate()
-    image = upload_image(client)
+    image = upload_image(client, 'output.jpg')
 
     print("Image was posted! Go check your images you sexy beast!")
     print("You can find it here: {0}".format(image['link']))
+    # items = client.gallery()
+    # for item in items:
+    #     print(item.title, item.link, item.views)

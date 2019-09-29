@@ -1,7 +1,11 @@
 # Note: npy file in vgg_conv.npy.zip in case the box link ever goes down.
 
-README TODO
-
+## TODO
+- [ ] README
+- [ ] Imgur create gallery to store input, style, output
+- [ ] hook into React gallery
+- [ ] Calculate estimated time based on tf loss
+- [ ] Email user when output is finished
 Below is Vince's original README explaining how this version of style transfer works
 =====
 

@@ -5,15 +5,15 @@ README TODO
 Below is Vince's original README explaining how this version of style transfer works
 =====
 
-# Style Transfer as Optimal Transport 
+### Style Transfer as Optimal Transport 
 
-## An algorithm that transfers the distribution of visual characteristics, or *style*, of a reference image onto a subject image via an Optimal Transport plan. 
+### An algorithm that transfers the distribution of visual characteristics, or *style*, of a reference image onto a subject image via an Optimal Transport plan. 
 
 
 ![input-content](media/panel.jpg)
 
 
-# How it Works:
+### How it Works:
 
 * For a general description and pictures: [style-transfer-theory.pdf](style-transfer-theory.pdf). 
 * For an explanation of the use of L2-Wasserstein distance instead of the loss function from the [Gatys et. al](https://arxiv.org/abs/1508.06576) framework see [why_wasserstein.ipynb](why_wasserstein.ipynb). 
@@ -23,7 +23,7 @@ Below is Vince's original README explaining how this version of style transfer w
 tl;dr - Passes a subject and style image through the convolution layers of the vgg19 network. Extracts probabalistic descriptions (first two moments) of the convolution filter activations. Calculates L2-Wasserstein distance between these probability distributions and then modifies the subject image optimally to minimize this distance.  
 
 
-# Running
+### Running
 
 Requires:
  1. Python 3 (w/ NumPy and PIL)

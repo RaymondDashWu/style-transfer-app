@@ -3,6 +3,10 @@ from dotenv import load_dotenv
 import os
 
 def authenticate():
+    """
+    Authenticates with Imgur API. Used in this app to upload images and create a gallery
+    containing subject, style, output
+    """
     load_dotenv(dotenv_path='imgur.env')
     CLIENT_ID = os.getenv("CLIENT_ID")
     CLIENT_SECRET = os.getenv("CLIENT_SECRET")
@@ -10,10 +14,12 @@ def authenticate():
     REFRESH_TOKEN = os.getenv("REFRESH_TOKEN")
 
     client = ImgurClient(CLIENT_ID, CLIENT_SECRET, ACCESS_TOKEN, REFRESH_TOKEN)
-    print("Authentication success", client)
     return client
 
 def upload_image(client, image):
+    """
+    Uploads images to Imgur
+    """
     album = None #TODO figure out 
     image_path = image #TODO change later
 
@@ -30,8 +36,4 @@ if __name__ == "__main__":
     client = authenticate()
     image = upload_image(client, 'output.jpg')
 
-    print("Image was posted! Go check your images you sexy beast!")
-    print("You can find it here: {0}".format(image['link']))
-    # items = client.gallery()
-    # for item in items:
-    #     print(item.title, item.link, item.views)
+    # print("Image was posted! You can find it here: {0}".format(image['link']))

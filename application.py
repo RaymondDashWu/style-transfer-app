@@ -13,7 +13,6 @@ from sendgrid.helpers.mail import Mail
 
 # Requirements to upload to Imgur
 from imgur_upload import *
-# from imgurpython import client as C
 import requests
 import base64
 
@@ -41,8 +40,8 @@ class CNNPrediction(Resource):
         subject_image = Image.open(args.subject)
 
         # print("args", args)
-        # print("style_image", style_image)
-        # print("args.style", args.style)
+        print("style_image", style_image)
+        print("args.style", args.style)
         # print("args.style.filename", args.style.filename)
         # print("style_image.filename", style_image.filename)
 # request.files['upload'].filename
@@ -51,22 +50,25 @@ class CNNPrediction(Resource):
         CLIENT_ID = os.getenv("CLIENT_ID")
         CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
-        with open(args.style, 'rb') as f:
-            data = f.read()
-            f.close()
+        # with open(args.style, 'rb') as f:
+        #     data = f.read()
+        #     f.close()
 
         url = 'https://api.imgur.com/3/image'
-        payload = {'image': base64.b64encode(data)}
-        # TRIED: args.style, style_image, base64.b64encode(args.style, style_image)
-        # base64.b64encode(data).decode()
-        files = {}
+        byte = base64.b64encode(style_image.tobytes())
+        byte = b"data:image/png;base64," + byte
+        payload = {'image': byte, 'type': 'base64', 'title': 'yes'}
+        # # TRIED: args.style, style_image, base64.b64encode(args.style, style_image)
+        # # base64.b64encode(data).decode()
+
         headers = {
         'Authorization': 'Client-ID 1ed8da9ed686569'
         }
-        response = requests.request('POST', url, headers = headers, data = payload, files = files, allow_redirects=False, timeout=60000)
+        response = requests.request('POST', url, headers = headers, data = payload, allow_redirects=False, timeout=60000)
         print("response.text", response.text)
         # C.upload(client, args.style)
         upload(client, args.subject)
+        # upload_image(client, style_image.tobytes())
 
         make=TransferStyle('vgg_conv.npy')
         make.describe_style(style_image)
@@ -74,7 +76,7 @@ class CNNPrediction(Resource):
         make.synthesize_image('output.jpg', optimizer = 'bfgs', steps=80)
 
         # imgur upload section
-        # client = authenticate()
+        client = authenticate()
         # upload_image(client, subject_image.open())
         # upload_image(client, style_image.open())
 
@@ -85,4 +87,4 @@ class CNNPrediction(Resource):
 # whenever called, starts new thread
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

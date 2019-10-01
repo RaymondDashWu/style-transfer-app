@@ -20,8 +20,9 @@ def upload_image(client, image):
     """
     Uploads images to Imgur
     """
+    # TODO account for PIL image or filestorage upload to make code DRYer
     album = None #TODO figure out how to do dynamic albums
-    image_path = image #TODO change later
+    image_path = image #TODO change later. Currently tells image_path for upload_from_path
 
     config = {
         'album': album,

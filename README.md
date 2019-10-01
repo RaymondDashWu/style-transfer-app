@@ -2,8 +2,11 @@
 
 ## TODO
 - [ ] README
+- [ ] Google bucket to upload to Imgur Note: couldn't figure out how to upload file objects to Imgur
 - [ ] Imgur create gallery to store input
+- [ ] Create frontend rather than Flask restplus
 - [ ] Style
+- [ ] Feedback form with star rating and description
 - [X] Output
 - [ ] Hook into React gallery
 - [ ] Calculate estimated time based on tf loss

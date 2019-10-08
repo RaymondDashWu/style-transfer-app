@@ -2,17 +2,19 @@
 
 ## TODO
 - [ ] README
-- [ ] Google bucket to upload to Imgur Note: couldn't figure out how to upload file objects to Imgur
-- [ ] Imgur create gallery to store input
+- ~~ Google bucket to upload to Imgur Note: couldn't figure out how to upload file objects to Imgur~~ Figured out
+- [X] Imgur create gallery to store input
 - [ ] Create frontend rather than Flask restplus
-- [ ] Style
+- [ ] Style all the pages
 - [ ] Feedback form with star rating and description
+- [ ] Separate pages explaining how it works, link to repo, etc
 - [X] Output
-- [ ] Hook into React gallery
+- [X] Hook into React gallery
 - [ ] Calculate estimated time based on tf loss
 - [ ] Email user when output is finished
-- [ ] Make separate Imgur account
+- [X] Make separate Imgur account
 - [ ] Hook up Imgur account to app
+- [ ] Check to see if requirements.txt works. Used pipreqs to get a cleaner file
 
 Below is Vince's original README explaining how this version of style transfer works
 

@@ -16,6 +16,9 @@ import requests
 import imgur_upload
 from imgur_upload import authenticate, upload_image
 import os
+import copy
+from io import BytesIO
+
 
 application = app = Flask(__name__)
 api = Api(app, version='1.0', title='Style Transfer TEST',
@@ -23,68 +26,53 @@ api = Api(app, version='1.0', title='Style Transfer TEST',
 ns = api.namespace('Make_School', description='Methods')
 
 parser = reqparse.RequestParser()
-# parser.add_argument('weights', location='files', type=FileStorage, required=False, default='vgg_conv.npy')
 # parser.add_argument('email', type="string", required=True)
-parser.add_argument('subject', location='files',
-                    type=FileStorage, required=True)
+parser.add_argument('subject', location='files', type=FileStorage, required=True)
 parser.add_argument('style', location='files', type=FileStorage, required=True)
-# parser.add_argument('output', location='files', type=FileStorage, required=False, default='output.jpg')​
 
 @ns.route('/prediction')
 @ns.expect(parser)
 class CNNPrediction(Resource):
     """Uploads your data to the CNN"""
     # @api.doc(parser=parser, description='Upload an mnist image')
+# [1, 8, 12, ...]
+# "1","8", "12", ..."
+# bla = map(str, list)
+# reduce(split(), set(bla))
 
     def post(self):
-        # TODO Make code DRYer by combining upload section for args and output
         args = parser.parse_args()
         style_image = args['style']
         subject_image = args['subject']
+        # email = args['email']
 
-        client = imgur_upload.authenticate()
-        CLIENT_ID = os.getenv("CLIENT_ID")
-        CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-        ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
-
-
-        # set options for the imgur request
-        url = 'https://api.imgur.com/3/upload'
-        style_img_payload = {'image': style_image}
-        subject_img_payload = {'image': subject_image}
-        headers = {'Authorization': 'Bearer {}'.format(ACCESS_TOKEN)}
-
-        # upload files to imgur using requests
-        style_img_req = requests.post(
-            url, files=style_img_payload, headers=headers)
-        subject_img_req = requests.post(
-            url, files=subject_img_payload, headers=headers)
-
-        # parse json responses from imgur
-        style_img_resp = style_img_req.json()
-        subject_img_resp = subject_img_req.json()
-
-        # status check
-        print(style_img_resp, "\n", subject_img_resp)
-
-        # format a response
-        resp = {
-            'style_image_url': style_img_resp['data']['link'],
-            'subject_image_url': subject_img_resp['data']['link']
-        }
+        # TODO Issue where opening image somehow changes the filestorage object?
+        # Tried putting the uploads above and commenting out style transfer section
+        # tried deepcopy but recursion error?
 
         # Style transfer section. Calls on vgg_styletrans functions
         make=TransferStyle('vgg_conv.npy')
-        make.describe_style(Image.open(style_image))
-        make.infer_loss(Image.open(subject_image))
+        opened_style = Image.open(style_image)
+        make.describe_style(opened_style)
+        print("style_image.filename", style_image.filename)
+        opened_style.save(style_image.filename)
+        print("style_image.filename after save", style_image.filename)
+
+        opened_subject = Image.open(subject_image)
+        make.infer_loss(opened_subject)
+        opened_subject.save(subject_image.filename)
         make.synthesize_image('output.jpg', optimizer = 'bfgs', steps=80)
 
         # imgur upload section
         client = authenticate()
-        image = upload_image(client, 'output.jpg')
+        upload_image(client, style_image.filename, "style")
+        upload_image(client, subject_image.filename, "subject")
+        upload_image(client, 'output.jpg', "output")
 
-        # return formatted response and 200 OK
-        return resp, 200
+        # TODO NOTE Cleanup. Couldn't figure out how to upload Pillow object so
+        # subject/style images are temporarily saved and then deleted here
+        os.remove(style_image.filename)
+        os.remove(subject_image.filename)
 
 # Python threading class
 # whenever called, starts new thread

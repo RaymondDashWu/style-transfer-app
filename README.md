@@ -2,7 +2,7 @@
 
 ## TODO
 - [ ] README
-- ~~ Google bucket to upload to Imgur Note: couldn't figure out how to upload file objects to Imgur~~ Figured out
+~~ Google bucket to upload to Imgur Note: couldn't figure out how to upload file objects to Imgur~~ Figured out
 - [X] Imgur create gallery to store input
 - [ ] Create frontend rather than Flask restplus
 - [ ] Style all the pages

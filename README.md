@@ -15,6 +15,8 @@
 - [X] Make separate Imgur account
 - [ ] Hook up Imgur account to app
 - [ ] Check to see if requirements.txt works. Used pipreqs to get a cleaner file
+- [ ] Account for bad input
+- [ ] Make Imgur images public when uploaded
 
 Below is Vince's original README explaining how this version of style transfer works
 

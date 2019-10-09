@@ -39,7 +39,7 @@ class TransferStyle(object):
     self.config = tf.ConfigProto(gpu_options=gpu_options,
                                  operation_timeout_in_ms=99999)
 
-    vgg_npy = np.load(vgg_weight_path).item()
+    vgg_npy = np.load(vgg_weight_path, allow_pickle=True).item()
     self.feed_dict = {param+':0': vgg_npy[param] for param in vgg_npy.keys()}
 
     self.vgg_ph = {}

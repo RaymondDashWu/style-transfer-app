@@ -5,6 +5,7 @@ import requests
 from werkzeug.datastructures import FileStorage
 
 
+
 def authenticate():
     """
     Authenticates with Imgur API. Used in this app to upload images and create a gallery
@@ -19,7 +20,7 @@ def authenticate():
     client = ImgurClient(CLIENT_ID, CLIENT_SECRET, ACCESS_TOKEN, REFRESH_TOKEN)
     return client
 
-def upload_image(client, image, filename):
+def upload_image(client, image, image_category):
     """
     Uploads images to Imgur
     """
@@ -63,9 +64,9 @@ def upload_image(client, image, filename):
     else:
         config = {
             'album': album,
-            'name': filename, 
-            'title': 'style transfer',
-            'description': 'This was created with DEPLOYED SITE. This is the {} image. Go to link to try TODO'.format(filename) 
+            'name': image_category, #TODO fix this to image filename
+            'title': image_category,
+            'description': 'This was created with DEPLOYED SITE. This is the {} image. Go to link to try TODO'.format(image_category) 
         }
         client.upload_from_path(image, config = config, anon = False)
 

@@ -3,6 +3,7 @@ from flask_restplus import Api, Resource, fields, reqparse
 from flask import Flask, jsonify, request, make_response, abort, render_template, redirect, url_for
 from werkzeug.datastructures import FileStorage
 from PIL import Image
+from flask_cors import CORS
 
 # Requirements for style transfer
 from vgg_styletrans import TransferStyle
@@ -20,17 +21,29 @@ import copy
 from io import BytesIO
 
 
+import time
+import resource
+import platform
+
+try:
+  import unzip_requirements
+except ImportError:
+  pass
+
+
 application = app = Flask(__name__)
+CORS(app)
+
 api = Api(app, version='1.0', title='Style Transfer TEST',
           description='Style Transfer')
-ns = api.namespace('Make_School', description='Methods')
+ns = api.namespace('style_transfer', description='Methods')
 
 parser = reqparse.RequestParser()
 # parser.add_argument('email', type="string", required=True)
 parser.add_argument('subject', location='files', type=FileStorage, required=True)
 parser.add_argument('style', location='files', type=FileStorage, required=True)
 
-@ns.route('/prediction')
+@ns.route('/')
 @ns.expect(parser)
 class CNNPrediction(Resource):
     """Uploads your data to the CNN"""
@@ -41,6 +54,11 @@ class CNNPrediction(Resource):
 # reduce(split(), set(bla))
 
     def post(self):
+        print('request.data', request.data)
+        print('request.form', request.form)
+        print('request.files', request.files)
+        print('request.headers', request.headers)
+
         args = parser.parse_args()
         style_image = args['style']
         subject_image = args['subject']
@@ -74,9 +92,19 @@ class CNNPrediction(Resource):
         os.remove(style_image.filename)
         os.remove(subject_image.filename)
 
-# Python threading class
-# whenever called, starts new thread
+        # Code from Edwin Cloud https://github.com/edwintcloud
+        # get memory usage
+        usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
+        # linux returns kb and macOS returns bytes, here we convert both to mb
+        if platform.system() == 'Linux':
+        # convert kb to mb and round to 2 digits
+            usage = round(usage/float(1 << 10), 2)
+        else:
+        # convert bytes to mb and round to 2 digits
+            usage = round(usage/float(1 << 20), 2)
+        # print memory usage
+        print("Memory Usage: {} mb.".format(usage))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

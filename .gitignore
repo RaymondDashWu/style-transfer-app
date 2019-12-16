@@ -5,6 +5,10 @@
 key.json
 *.h5
 *.npy
+*.gz
+rootkey.csv
+.requirements.zip
+.DS_Store/
 
 ### Flask ###
 instance/*

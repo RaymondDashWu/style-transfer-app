@@ -7,9 +7,10 @@
         "runtime": "python3.6",
         "s3_bucket": "zappa-style-transfer",
         "slim_handler": true,
-        "memory_size": 1024,
+        "memory_size": 3008,
+        "timeout_seconds": 900,
         "use_precompiled_packages": false,
-        "exclude": ["*.jpg", "*.png", "*.pdf", "*.zip", "*.gz", "*.ipynb", "*.env", "*.txt", "*.csv", "*.so", "unsupported", "*.pyc", "tests", "botocore*"]
+        "exclude": ["*.jpg", "*.png", "*.pdf", "*.zip", "*.gz", "*.ipynb", "*.env", "*.txt", "*.csv", "*.so", "unsupported", "*.pyc", "tests", "botocore*", "boto3*", "Pillow*"]
     },
     "dev_ap_northeast_1": {
         "aws_region": "ap-northeast-1",

@@ -19,6 +19,7 @@ from imgur_upload import authenticate, upload_image
 import os
 import copy
 from io import BytesIO
+from sendgrid_email import send_styled_email
 
 
 import time
@@ -39,7 +40,7 @@ api = Api(app, version='1.0', title='Style Transfer TEST',
 ns = api.namespace('style_transfer', description='Methods')
 
 parser = reqparse.RequestParser()
-# parser.add_argument('email', type="string", required=True)
+parser.add_argument('email', type=str, required=True)
 parser.add_argument('subject', location='files', type=FileStorage, required=True)
 parser.add_argument('style', location='files', type=FileStorage, required=True)
 
@@ -47,12 +48,6 @@ parser.add_argument('style', location='files', type=FileStorage, required=True)
 @ns.expect(parser)
 class CNNPrediction(Resource):
     """Uploads your data to the CNN"""
-    # @api.doc(parser=parser, description='Upload an mnist image')
-# [1, 8, 12, ...]
-# "1","8", "12", ..."
-# bla = map(str, list)
-# reduce(split(), set(bla))
-
     def post(self):
         print('request.data', request.data)
         print('request.form', request.form)
@@ -62,7 +57,7 @@ class CNNPrediction(Resource):
         args = parser.parse_args()
         style_image = args['style']
         subject_image = args['subject']
-        # email = args['email']
+        email = args['email']
 
         # TODO Issue where opening image somehow changes the filestorage object?
         # Tried putting the uploads above and commenting out style transfer section
@@ -86,6 +81,9 @@ class CNNPrediction(Resource):
         upload_image(client, style_image.filename, "style")
         upload_image(client, subject_image.filename, "subject")
         upload_image(client, 'output.jpg', "output")
+
+        # Sends the resulting stylized image to email via Sendgrid
+        send_styled_email(email)
 
         # TODO NOTE Cleanup. Couldn't figure out how to upload Pillow object so
         # subject/style images are temporarily saved and then deleted here

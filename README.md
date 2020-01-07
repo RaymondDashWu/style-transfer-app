@@ -1,5 +1,8 @@
 # Note: npy file in vgg_conv.npy.zip in case the box link ever goes down.
 
+Tried deploying to Lambda via Zappa and Serverless. File was too big but when I finally got it under 512MB on Zappa I had to set "use_precompiled_packages": false which disabled C extensions. This affected _imaging from Pillow and 
+
+
 ## TODO
 - [ ] README
 - ~~Google bucket to upload to Imgur Note: couldn't figure out how to upload file objects to Imgur~~ Figured out

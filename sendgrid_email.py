@@ -44,7 +44,8 @@ def send_styled_email(to_email):
         print(response.body)
         print(response.headers)
     except Exception as e:
-        print(e.message)
+        print(e)
+        # print(e.message)
 
 if __name__ == '__main__':
-    send_styled_email()
+    send_styled_email('raymond.wu@students.makeschool.com')

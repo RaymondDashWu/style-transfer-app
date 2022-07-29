@@ -66,7 +66,7 @@ Markdown==3.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
 mdv==1.7.4
-mistune==0.8.4
+mistune==2.0.3
 msgpack==0.6.1
 nb-conda==2.2.1
 nb-conda-kernels==2.2.2
